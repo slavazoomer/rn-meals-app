@@ -1,22 +1,34 @@
-import { View, Pressable, Text, StyleSheet } from "react-native"
+import { Link } from "expo-router"
+import { View, Pressable, Text, StyleSheet, Platform } from "react-native"
 
 const CategoryGridTile = ({
+  id,
   title,
   color,
 }: {
+  id: string
   title: string
-  color?: string
+  color: string
 }) => {
   return (
     <View style={styles.gridItem}>
-      <Pressable
-        android_ripple={{ color: "#ccc" }}
-        style={({ pressed }) => [styles.button, { opacity: pressed ? 0.5 : 1 }]}
+      <Link
+        href={{ pathname: `/overview`, params: { id } }}
+        asChild
+        style={{ flex: 1 }}
       >
-        <View style={[styles.innerContainer, { backgroundColor: color }]}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-      </Pressable>
+        <Pressable
+          android_ripple={{ color: "#ccc" }}
+          style={({ pressed }) => [
+            styles.button,
+            { opacity: pressed ? 0.5 : 1 },
+          ]}
+        >
+          <View style={[styles.innerContainer, { backgroundColor: color }]}>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+        </Pressable>
+      </Link>
     </View>
   )
 }
@@ -35,7 +47,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     textShadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
-    overflow: "hidden",
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
   },
   button: {
     flex: 1,
